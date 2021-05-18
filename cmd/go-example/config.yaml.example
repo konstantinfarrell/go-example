@@ -1,0 +1,21 @@
+db:
+    user: goexampleapiuser
+    pass: foo
+    name: filestore
+    port: 5432
+    addr: 127.0.0.1
+
+cache:
+    addr: localhost:6739
+    pass: 
+    db: 0 
+
+server:
+    port: localhost:9001
+    loglevel: debug
+    timeout_seconds: 30
+
+aws:
+    region: us-east-1
+    kinesis_stream_name: go-example-filestream
+    partition_key: 1
