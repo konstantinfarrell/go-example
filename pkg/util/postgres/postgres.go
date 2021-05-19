@@ -36,7 +36,7 @@ func connOptionsFromConfig(conf *config.Configuration) *pg.Options {
 
 func (d *Database) Call(hasReturn bool, files *[]gox.File, sp string, args ...interface{}) (*[]gox.File, error){
 	log.Printf("Call sp %s called", sp)
-	query := formatCall(hasReturn, sp, args)
+	query := formatCall(hasReturn, sp, args...)
 	log.Printf("Query: %s", query)
 	_, err := d.Conn.Query(files, query)
 	if err != nil {
@@ -49,16 +49,21 @@ func (d *Database) Call(hasReturn bool, files *[]gox.File, sp string, args ...in
 
 func formatCall(hasReturn bool, sp string, args ...interface{}) (string) {
 	var query, q_args string
-
 	for _, arg := range args {
-		if q_args == "" {
-			q_args = fmt.Sprintf("%v", arg)
-		} else {
-			q_args = fmt.Sprintf("%v, %v", q_args, arg)
+
+		fmtStr := "'%v'"
+		if arg == "" {
+			arg = "null"
+			fmtStr = "%v"
 		}
-	}
-	if q_args == "[]" {
-		q_args = ""
+
+		if q_args == "" {
+			q_args = fmt.Sprintf(fmtStr, arg)
+		} else {
+			fmtStr = fmt.Sprintf("%v, %v", "%v", fmtStr)
+			q_args = fmt.Sprintf(fmtStr, q_args, arg)
+		}
+		log.Printf("%s, %s", arg, reflect.TypeOf(arg))
 	}
 	if hasReturn {
 		query = fmt.Sprintf("select * from %s(%s)", sp, q_args)

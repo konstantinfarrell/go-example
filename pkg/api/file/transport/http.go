@@ -3,7 +3,6 @@ package transport
 import (
 	"net/http"
 	"time"
-	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
@@ -48,7 +47,7 @@ func (h HTTP) create(c echo.Context) error {
 	if err := c.Bind(r); err != nil {
 		return err
 	}
-	created := strconv.Itoa(int(time.Now().Unix()))
+	created := time.Now().UTC().Format(time.RFC3339)
 
 	fileId := uuid.New().String()
 
