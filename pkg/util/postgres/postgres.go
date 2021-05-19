@@ -63,7 +63,6 @@ func formatCall(hasReturn bool, sp string, args ...interface{}) (string) {
 			fmtStr = fmt.Sprintf("%v, %v", "%v", fmtStr)
 			q_args = fmt.Sprintf(fmtStr, q_args, arg)
 		}
-		log.Printf("%s, %s", arg, reflect.TypeOf(arg))
 	}
 	if hasReturn {
 		query = fmt.Sprintf("select * from %s(%s)", sp, q_args)

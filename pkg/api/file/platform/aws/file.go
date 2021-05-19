@@ -39,7 +39,13 @@ func (f File) Create(kc *kinesis.Kinesis, streamName string, file *gox.File, par
 func (f File) Delete(kc *kinesis.Kinesis, streamName string, fileId string, partitionKey string) (string, error){
 	sn := aws.String(streamName)
 	pk := aws.String(partitionKey)
-	formatted, err := formatPayload(fileId, "delete")
+
+	file := gox.File{FileId:fileId}
+	data, err := file.ToJson()
+	formatted, err := formatPayload(data, "delete")
+	if err != nil {
+		return "", err
+	}
 	output, err := kc.PutRecord(&kinesis.PutRecordInput {
 		Data:			formatted,
 		StreamName:		sn,
