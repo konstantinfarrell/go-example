@@ -22,7 +22,7 @@ import (
 func Start(conf *config.Configuration) error {
 	// Initialize services from configuration object
 
-	// cache
+	// Cache
 	cache, err := redis.New(conf.Cache.Addr, conf.Cache.Pass, conf.Cache.DB)
 	if err != nil {
 		panic(err)	
