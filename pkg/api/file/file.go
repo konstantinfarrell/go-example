@@ -43,7 +43,6 @@ func (f File) Read(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
 
 func (f File) ReadAll(fc chan gox.FileChannel, c echo.Context) {
 	result, err := f.database.ReadAllFiles(f.pgs)
-	fmt.Printf("%", result)
 	if err != nil {
 		fc <- gox.FileChannel{File: nil, Err: err}
 	}

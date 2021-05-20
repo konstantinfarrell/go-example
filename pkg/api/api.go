@@ -3,7 +3,6 @@ package api
 import (
 	_ "crypto/sha1"
 	_ "os"
-	"fmt"
 
 	"github.com/konstantinfarrell/go-example/pkg/util/config"
 	"github.com/konstantinfarrell/go-example/pkg/util/server"
@@ -49,7 +48,6 @@ func Start(conf *config.Configuration) error {
 	// Logging
 	log := zlog.New()
 
-	fmt.Printf("region:", conf.AWS.Region)
 	// Instantiate server
 	e := server.New()
 	
