@@ -23,7 +23,9 @@ type LogService struct {
 
 const name = "file"
 
-func (ls *LogService) Create(c echo.Context, request *gox.File) (response *gox.File, err error) {
+func (ls *LogService) Create(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+	var response *[]gox.File
+	var err error
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
@@ -35,10 +37,16 @@ func (ls *LogService) Create(c echo.Context, request *gox.File) (response *gox.F
 			},
 		)
 	}(time.Now())
-	return ls.Service.Create(c, request)
+	go ls.Service.Create(fc, c, request)
+	result := <- fc
+	response = result.File
+	err = result.Err
+	return
 }
 
-func (ls *LogService) ReadAll(c echo.Context) (response *[]gox.File, err error) {
+func (ls *LogService) ReadAll(fc chan gox.FileChannel, c echo.Context) {
+	var response *[]gox.File
+	var err error
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
@@ -49,10 +57,15 @@ func (ls *LogService) ReadAll(c echo.Context) (response *[]gox.File, err error) 
 			},
 		)
 	}(time.Now())
-	return ls.Service.ReadAll(c)
+	go ls.Service.ReadAll(fc, c)
+	result := <- fc
+	response = result.File
+	err = result.Err
 }
 
-func (ls *LogService) Read(c echo.Context, request *gox.File) (response *gox.File, err error) {
+func (ls *LogService) Read(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+	var response *[]gox.File
+	var err error
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
@@ -64,10 +77,14 @@ func (ls *LogService) Read(c echo.Context, request *gox.File) (response *gox.Fil
 			},
 		)
 	}(time.Now())
-	return ls.Service.Read(c, request)
+	go ls.Service.Read(fc, c, request)
+	result := <- fc
+	response = result.File
+	err = result.Err
 }
 
-func (ls *LogService) Delete(c echo.Context, request *gox.File) (err error) {
+func (ls *LogService) Delete(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+	var err error
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
@@ -78,5 +95,7 @@ func (ls *LogService) Delete(c echo.Context, request *gox.File) (err error) {
 			},
 		)
 	}(time.Now())
-	return ls.Service.Delete(c, request)
+	go ls.Service.Delete(fc, c, request)
+	result := <- fc
+	err = result.Err
 }

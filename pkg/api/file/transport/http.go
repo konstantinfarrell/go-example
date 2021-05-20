@@ -51,7 +51,9 @@ func (h HTTP) create(c echo.Context) error {
 
 	fileId := uuid.New().String()
 
-	file, err := h.svc.Create(c, &gox.File{
+	fc := make(chan gox.FileChannel)
+	
+	go h.svc.Create(fc, c, &gox.File{
 		Filename:		r.Filename,
 		Path:			r.Path,
 		Permissions:	r.Permissions,
@@ -62,6 +64,10 @@ func (h HTTP) create(c echo.Context) error {
 		Received:		created,
 	})
 
+	result := <- fc
+	file := result.File
+	err := result.Err
+
 	if err != nil {
 		return err
 	}
@@ -71,21 +77,29 @@ func (h HTTP) create(c echo.Context) error {
 
 //TODO: pagination
 func (h HTTP) readAll(c echo.Context) error {
-	files, err := h.svc.ReadAll(c)
+	fc := make(chan gox.FileChannel)
+	go h.svc.ReadAll(fc, c)
 
+
+	result := <- fc
+	file := result.File
+	err := result.Err
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, &files)
+	return c.JSON(http.StatusOK, &file)
 }
 
 func (h HTTP) read(c echo.Context) error {
+	fc := make(chan gox.FileChannel)
 	id := c.Param("id")
 
-	result, err := h.svc.Read(c, &gox.File{
+	go h.svc.Read(fc, c, &gox.File{
 		FileId: id,
 	})
+	result := <- fc
+	err := result.Err
 
 	if err != nil {
 		return err
@@ -95,9 +109,13 @@ func (h HTTP) read(c echo.Context) error {
 }
 
 func (h HTTP) delete(c echo.Context) error {
+	fc := make(chan gox.FileChannel)
 	id := c.Param("id")
 
-	if err := h.svc.Delete(c, &gox.File{FileId: id}); err != nil {
+	go h.svc.Delete(fc, c, &gox.File{FileId: id})
+	result := <- fc
+	err := result.Err
+	if err != nil {
 		return err
 	}
 

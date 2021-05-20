@@ -12,10 +12,10 @@ import (
 )
 
 type Service interface {
-	Create(echo.Context, *gox.File) (*gox.File, error)
-	ReadAll(echo.Context) (*[]gox.File, error)
-	Read(echo.Context, *gox.File) (*gox.File, error)
-	Delete(echo.Context, *gox.File) error
+	Create(chan gox.FileChannel, echo.Context, *gox.File)
+	ReadAll(chan gox.FileChannel, echo.Context)
+	Read(chan gox.FileChannel, echo.Context, *gox.File) 
+	Delete(chan gox.FileChannel, echo.Context, *gox.File)
 }
 
 func New(cache *rs.Client, pgs *postgres.Database, database *ffile.File, kinesis *kinesis.Kinesis, aws *faws.File, streamName string, partitionKey string) *File {

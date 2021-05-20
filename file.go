@@ -4,6 +4,11 @@ import (
 	"encoding/json"
 )
 
+type FileChannel struct {
+	File 	*[]File
+	Err		error
+} 
+
 type File struct {
 	FileId		string
 	Filename 	string
