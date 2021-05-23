@@ -22,7 +22,8 @@ func NewHTTP(svc file.Service, r *echo.Group){
 	h := HTTP{svc}
 	ur := r.Group("/files")
 
-	// Define routes for 
+	// Define routes for REST API
+	// TODO: swagger
 	ur.POST("", h.create)
 	ur.GET("", h.readAll)
 	ur.GET("/:id", h.read)

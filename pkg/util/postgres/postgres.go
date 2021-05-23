@@ -47,6 +47,7 @@ func (d *Database) Call(hasReturn bool, files *[]gox.File, sp string, args ...in
 	return files, nil
 }
 
+// TODO: make this better
 func formatCall(hasReturn bool, sp string, args ...interface{}) (string) {
 	var query, q_args string
 	for _, arg := range args {
