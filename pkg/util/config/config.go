@@ -55,17 +55,17 @@ type Configuration struct {
 }
 
 type Database struct {
-	User string
-	Pass string
-	Name string
-	Port int
-	Addr string
+	User string		`envconfig:"DB_USER"`
+	Pass string		`envconfig:"DB_PASS"`
+	Name string		`envconfig:"DB_NAME"`	
+	Port int		`envconfig:"DB_PORT"`
+	Addr string		`envconfig:"DB_ADDR"`
 }
 
 type Cache struct {
-	Addr 	string
-	Pass 	string
-	DB		int
+	Addr 	string	`envconfig:"CACHE_ADDR"`
+	Pass 	string	`envconfig:"CACHE_PASS"`
+	DB		int		`envconfig:"CACHE_DB"`
 }
 
 type Server struct {
@@ -78,9 +78,9 @@ type Server struct {
 type Aws struct {
 	AWSAccessKeyId		string	`envconfig:"AWS_ACCESS_KEY_ID"`
 	AWSSecretAccessKey 	string	`envconfig:"AWS_SECRET_ACCESS_KEY"`	
-	Region				string	
-	KinesisStreamName	string	`yaml:"kinesis_stream_name"`
-	PartitionKey		string	`yaml:"partition_key"`
+	Region				string	`envconfig:"AWS_REGION"`
+	KinesisStreamName	string	`envconfig:"KINESIS_STREAM_NAME"`
+	PartitionKey		string	`envconfig:"KINESIS_PARTITION_KEY"`
 }
 
 func printTypes(item Configuration){
