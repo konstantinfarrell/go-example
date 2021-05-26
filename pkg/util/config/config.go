@@ -12,10 +12,12 @@ import (
 
 func Load(path string) (*Configuration, error) {
 	var conf = new(Configuration)
+
 	conf, err := LoadFromConfig(path, conf)
 	if err != nil {
 		return nil, err
 	}
+
 
 	conf, err = LoadFromEnvVar(conf)
 	if err != nil {
@@ -26,6 +28,7 @@ func Load(path string) (*Configuration, error) {
 }
 
 func LoadFromConfig(path string, conf *Configuration) (*Configuration, error){
+	// this was nice when config files were the way to go
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading config file, %s", err)
@@ -37,13 +40,27 @@ func LoadFromConfig(path string, conf *Configuration) (*Configuration, error){
 }
 
 func LoadFromEnvVar(conf *Configuration) (*Configuration, error) {
-	var aws Aws // Not necessary since AWS libs read from env vars anyway but still a good exercise
+	var aws Aws
 	err := envconfig.Process("", &aws)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading environment variables, %v", err.Error())
 	}
-	conf.AWS.AWSAccessKeyId = aws.AWSAccessKeyId
-	conf.AWS.AWSSecretAccessKey = aws.AWSSecretAccessKey
+	conf.AWS = &aws
+
+	var db Database 
+	err = envconfig.Process("", &db)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading environment variables, %v", err.Error())
+	}
+	conf.DB = &db
+
+	var c Cache
+	err = envconfig.Process("", &c)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading environment variables, %v", err.Error())
+	}
+	conf.Cache = &c
+
 	return conf, nil
 }
 
