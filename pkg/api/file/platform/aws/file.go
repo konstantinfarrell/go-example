@@ -9,9 +9,13 @@ import (
 	"github.com/konstantinfarrell/go-example"
 )
 
+type FileKinesis interface {
+	PutRecord(*kinesis.PutRecordInput) (*kinesis.PutRecordOutput, error)
+}
+
 type File struct{}
 
-func (f File) Create(kc *kinesis.Kinesis, streamName string, file *gox.File, partitionKey string) (string, error){
+func (f File) Create(kc FileKinesis, streamName string, file *gox.File, partitionKey string) (string, error){
 	sn := aws.String(streamName)
 	pk := aws.String(partitionKey)
 	
@@ -36,7 +40,7 @@ func (f File) Create(kc *kinesis.Kinesis, streamName string, file *gox.File, par
 	return result, nil
 }
 
-func (f File) Delete(kc *kinesis.Kinesis, streamName string, fileId string, partitionKey string) (string, error){
+func (f File) Delete(kc FileKinesis, streamName string, fileId string, partitionKey string) (string, error){
 	sn := aws.String(streamName)
 	pk := aws.String(partitionKey)
 

@@ -12,8 +12,12 @@ import (
 	"github.com/konstantinfarrell/go-example/pkg/util/config"
 )
 
+type Databaser interface {
+	Query(interface{}, interface{}, ...interface{}) (pg.Result, error)
+}
+
 type Database struct {
-	Conn	*pg.DB
+	Conn	Databaser
 }
 
 func New(conf *config.Configuration) (*Database, error) {
