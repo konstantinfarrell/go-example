@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/konstantinfarrell/go-example"
+	"github.com/konstantinfarrell/go-example/pkg/util/mock"
 )
 
 func TestCreate(t *testing.T) {

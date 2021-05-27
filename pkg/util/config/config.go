@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
-	"reflect"
 
 	"github.com/kelseyhightower/envconfig"
 	_ "github.com/konstantinfarrell/go-example/pkg/util/helpers"
@@ -28,7 +27,6 @@ func Load(path string) (*Configuration, error) {
 }
 
 func LoadFromConfig(path string, conf *Configuration) (*Configuration, error){
-	// this was nice when config files were the way to go
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading config file, %s", err)
@@ -91,22 +89,10 @@ type Server struct {
 	TimeoutSeconds 	int		`yaml:"timeout_seconds"`
 }
 
-// Unnecessary since aws packages read from environemnt variables
 type Aws struct {
 	AWSAccessKeyId		string	`envconfig:"AWS_ACCESS_KEY_ID"`
 	AWSSecretAccessKey 	string	`envconfig:"AWS_SECRET_ACCESS_KEY"`	
 	Region				string	`envconfig:"AWS_REGION"`
 	KinesisStreamName	string	`envconfig:"KINESIS_STREAM_NAME"`
 	PartitionKey		string	`envconfig:"KINESIS_PARTITION_KEY"`
-}
-
-func printTypes(item Configuration){
-	itemVal := reflect.ValueOf(item)
-    for i := 0; i < itemVal.NumField(); i++ {
-        fieldVal := itemVal.Field(i)
-        if fieldVal.Kind() == reflect.Ptr {
-            fieldVal = fieldVal.Elem()
-        }
-        fmt.Println(fieldVal.Kind())
-    }
 }
