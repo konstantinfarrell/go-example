@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	rs "github.com/go-redis/redis/v8"
-
 	"github.com/konstantinfarrell/go-example"
+	"github.com/konstantinfarrell/go-example/pkg/util/redis"
 )
 
 var FileKey = "f:%s"
@@ -14,7 +13,7 @@ var ctx = context.Background()
 
 type File struct{}
 
-func (f File) Create(client rs.Client, file gox.File) (*gox.File, error){
+func (f File) Create(client redis.Cacher, file gox.File) (*gox.File, error){
 	var key = fmt.Sprintf(FileKey, file.FileId)
 	jsonFile, err := file.ToJson()
 	if err != nil {
@@ -29,7 +28,7 @@ func (f File) Create(client rs.Client, file gox.File) (*gox.File, error){
 	return &file, nil
 }
 
-func (f File) Read(client rs.Client, fileId string) (*gox.File, error) {
+func (f File) Read(client redis.Cacher, fileId string) (*gox.File, error) {
 	var key = fmt.Sprintf(FileKey, fileId)
 	var file = new(gox.File)
 	val, err := client.Get(ctx, key).Result()
@@ -44,7 +43,7 @@ func (f File) Read(client rs.Client, fileId string) (*gox.File, error) {
 	return jsonFile, nil
 }
 
-func (f File) ReadAll(client rs.Client) (*[]gox.File, error) {
+func (f File) ReadAll(client redis.Cacher) (*[]gox.File, error) {
 	var key = fmt.Sprintf(FileKey, "*")
 	file := new(gox.File)
 	val, err := client.Get(ctx, key).Result()
@@ -60,7 +59,7 @@ func (f File) ReadAll(client rs.Client) (*[]gox.File, error) {
 	return &jsonFiles, nil
 }
 
-func (f File) Delete(client rs.Client, file gox.File) error {
+func (f File) Delete(client redis.Cacher, file gox.File) error {
 	var key = fmt.Sprintf(FileKey, file.FileId)
 	err := client.Del(ctx, key).Err()
 	return err

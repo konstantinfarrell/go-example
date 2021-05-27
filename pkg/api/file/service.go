@@ -2,10 +2,10 @@ package file
 
 import (
 	"github.com/labstack/echo"
-	rs "github.com/go-redis/redis"
 
 	"github.com/konstantinfarrell/go-example"
 	"github.com/konstantinfarrell/go-example/pkg/util/postgres"
+	"github.com/konstantinfarrell/go-example/pkg/util/redis"
 	faws "github.com/konstantinfarrell/go-example/pkg/api/file/platform/aws"
 	ffile "github.com/konstantinfarrell/go-example/pkg/api/file/platform/postgres"
 )
@@ -17,7 +17,7 @@ type Service interface {
 	Delete(chan gox.FileChannel, echo.Context, *gox.File)
 }
 
-func New(cache *rs.Client, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {
+func New(cache redis.Cacher, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {
 	return &File{
 		cache: cache,
 		pgs: pgs,
@@ -29,16 +29,14 @@ func New(cache *rs.Client, pgs *postgres.Database, database *ffile.File, kinesis
 	}
 }
 
-func Initialize(cache *rs.Client, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {
+func Initialize(cache redis.Cacher, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {
 	return New(cache, pgs, database, kinesis, aws, streamName, partitionKey)
 }
 
 
-
-
 // File represents file application service
 type File struct {
-	cache 			*rs.Client
+	cache 			redis.Cacher
 	pgs				*postgres.Database
 	database		*ffile.File
 	aws				*faws.File
