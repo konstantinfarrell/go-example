@@ -5,5 +5,5 @@ run:
 
 test:
 	for f in $$(find . -name "*test.go" -type f) ; do \
-		go test $${f} ; \
+		go test $${f} -v ; \
 	done

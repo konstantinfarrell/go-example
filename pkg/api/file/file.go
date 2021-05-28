@@ -29,6 +29,11 @@ func (f File) Read(fc chan gox.FileChannel, c Context, request *gox.File) {
 		fc <- gox.FileChannel{File: nil, Err: err}
 	}
 
+	if result == nil {
+		fc <- gox.FileChannel{File: nil, Err: err}
+		return
+	}
+
 	files := []gox.File{
 		*result,
 	}
