@@ -53,6 +53,7 @@ func (h HTTP) create(c echo.Context) error {
 	fileId := uuid.New().String()
 
 	fc := make(chan gox.FileChannel)
+	defer close(fc)
 	
 	go h.svc.Create(fc, c, &gox.File{
 		Filename:		r.Filename,
@@ -79,6 +80,7 @@ func (h HTTP) create(c echo.Context) error {
 //TODO: pagination
 func (h HTTP) readAll(c echo.Context) error {
 	fc := make(chan gox.FileChannel)
+	defer close(fc)
 	go h.svc.ReadAll(fc, c)
 
 
@@ -94,6 +96,7 @@ func (h HTTP) readAll(c echo.Context) error {
 
 func (h HTTP) read(c echo.Context) error {
 	fc := make(chan gox.FileChannel)
+	defer close(fc)
 	id := c.Param("id")
 
 	go h.svc.Read(fc, c, &gox.File{
@@ -111,6 +114,7 @@ func (h HTTP) read(c echo.Context) error {
 
 func (h HTTP) delete(c echo.Context) error {
 	fc := make(chan gox.FileChannel)
+	defer close(fc)
 	id := c.Param("id")
 
 	go h.svc.Delete(fc, c, &gox.File{FileId: id})

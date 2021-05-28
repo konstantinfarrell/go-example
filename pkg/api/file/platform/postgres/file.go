@@ -5,7 +5,9 @@ import (
 	"github.com/konstantinfarrell/go-example/pkg/util/postgres"
 )
 
-type File struct {}
+type File struct {
+	
+}
 
 func (f *File) ReadFile(d *postgres.Database, file *gox.File) (*gox.File, error) {
 	spname := "read_file"

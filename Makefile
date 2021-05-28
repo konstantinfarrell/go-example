@@ -1,5 +1,9 @@
+TEST_FILES = 
+
 run:
 	go run cmd/go-example/main.go
 
 test:
-	find . -name "*test.go" -type f | go test | xargs 
+	for f in $$(find . -name "*test.go" -type f) ; do \
+		go test $${f} ; \
+	done

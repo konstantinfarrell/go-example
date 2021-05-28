@@ -13,6 +13,8 @@ require (
 	github.com/labstack/gommon v0.3.0
 	github.com/lib/pq v1.10.2
 	github.com/rs/zerolog v1.22.0
+	github.com/stretchr/objx v0.1.1 // indirect
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210506145944-38f3c27a63bf // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )

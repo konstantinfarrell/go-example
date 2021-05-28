@@ -10,11 +10,15 @@ import (
 	ffile "github.com/konstantinfarrell/go-example/pkg/api/file/platform/postgres"
 )
 
+type Context interface {
+	echo.Context
+}
+
 type Service interface {
-	Create(chan gox.FileChannel, echo.Context, *gox.File)
-	ReadAll(chan gox.FileChannel, echo.Context)
-	Read(chan gox.FileChannel, echo.Context, *gox.File) 
-	Delete(chan gox.FileChannel, echo.Context, *gox.File)
+	Create(chan gox.FileChannel, Context, *gox.File)
+	ReadAll(chan gox.FileChannel, Context)
+	Read(chan gox.FileChannel, Context, *gox.File) 
+	Delete(chan gox.FileChannel, Context, *gox.File)
 }
 
 func New(cache redis.Cacher, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {

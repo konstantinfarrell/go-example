@@ -9,6 +9,7 @@ import (
 	"github.com/konstantinfarrell/go-example"
 )
 
+
 type FileKinesis interface {
 	PutRecord(*kinesis.PutRecordInput) (*kinesis.PutRecordOutput, error)
 }
@@ -23,7 +24,7 @@ func (f File) Create(kc FileKinesis, streamName string, file *gox.File, partitio
 	if err != nil {
 		return "", err
 	}
-	formatted, err := formatPayload(data, "create")
+	formatted, err := FormatPayload(data, "create")
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +47,7 @@ func (f File) Delete(kc FileKinesis, streamName string, fileId string, partition
 
 	file := gox.File{FileId:fileId}
 	data, err := file.ToJson()
-	formatted, err := formatPayload(data, "delete")
+	formatted, err := FormatPayload(data, "delete")
 	if err != nil {
 		return "", err
 	}
@@ -66,7 +67,7 @@ func (f File) Delete(kc FileKinesis, streamName string, fileId string, partition
 	return result, nil
 }
 
-func formatPayload(data string, operation string) ([]byte, error) {
+func FormatPayload(data string, operation string) ([]byte, error) {
 	payload := make(map[string]string)
 	payload["command"] = operation
 	payload["data"] = data

@@ -3,8 +3,6 @@ package file
 import (
 	"time"
 
-	"github.com/labstack/echo"
-
 	"github.com/konstantinfarrell/go-example"
 	"github.com/konstantinfarrell/go-example/pkg/api/file"
 )
@@ -23,7 +21,7 @@ type LogService struct {
 
 const name = "file"
 
-func (ls *LogService) Create(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+func (ls *LogService) Create(fc chan gox.FileChannel, c file.Context, request *gox.File) {
 	var response *[]gox.File
 	var err error
 	defer func(begin time.Time) {
@@ -44,7 +42,7 @@ func (ls *LogService) Create(fc chan gox.FileChannel, c echo.Context, request *g
 	return
 }
 
-func (ls *LogService) ReadAll(fc chan gox.FileChannel, c echo.Context) {
+func (ls *LogService) ReadAll(fc chan gox.FileChannel, c file.Context) {
 	var response *[]gox.File
 	var err error
 	defer func(begin time.Time) {
@@ -63,7 +61,7 @@ func (ls *LogService) ReadAll(fc chan gox.FileChannel, c echo.Context) {
 	err = result.Err
 }
 
-func (ls *LogService) Read(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+func (ls *LogService) Read(fc chan gox.FileChannel, c file.Context, request *gox.File) {
 	var response *[]gox.File
 	var err error
 	defer func(begin time.Time) {
@@ -83,7 +81,7 @@ func (ls *LogService) Read(fc chan gox.FileChannel, c echo.Context, request *gox
 	err = result.Err
 }
 
-func (ls *LogService) Delete(fc chan gox.FileChannel, c echo.Context, request *gox.File) {
+func (ls *LogService) Delete(fc chan gox.FileChannel, c file.Context, request *gox.File) {
 	var err error
 	defer func(begin time.Time) {
 		ls.logger.Log(
