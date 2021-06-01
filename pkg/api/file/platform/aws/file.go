@@ -17,6 +17,15 @@ type FileKinesis interface {
 type File struct{}
 
 func (f File) Create(kc FileKinesis, streamName string, file *gox.File, partitionKey string) (string, error){
+	return f.sendPayload(kc, streamName, file, partitionKey, "create")
+}
+
+func (f File) Delete(kc FileKinesis, streamName string, fileId string, partitionKey string) (string, error){
+	file := &gox.File{FileId:fileId}
+	return f.sendPayload(kc, streamName, file, partitionKey, "delete")
+}
+
+func (f File) sendPayload(kc FileKinesis, streamName string, file *gox.File, partitionKey string, operation string) (string, error) {
 	sn := aws.String(streamName)
 	pk := aws.String(partitionKey)
 	
@@ -24,7 +33,7 @@ func (f File) Create(kc FileKinesis, streamName string, file *gox.File, partitio
 	if err != nil {
 		return "", err
 	}
-	formatted, err := FormatPayload(data, "create")
+	formatted, err := FormatPayload(data, operation)
 	if err != nil {
 		return "", err
 	}
@@ -38,32 +47,6 @@ func (f File) Create(kc FileKinesis, streamName string, file *gox.File, partitio
 	if err != nil {
 		return "", err
 	}
-	return result, nil
-}
-
-func (f File) Delete(kc FileKinesis, streamName string, fileId string, partitionKey string) (string, error){
-	sn := aws.String(streamName)
-	pk := aws.String(partitionKey)
-
-	file := gox.File{FileId:fileId}
-	data, err := file.ToJson()
-	formatted, err := FormatPayload(data, "delete")
-	if err != nil {
-		return "", err
-	}
-	output, err := kc.PutRecord(&kinesis.PutRecordInput {
-		Data:			formatted,
-		StreamName:		sn,
-		PartitionKey:	pk,
-	})
-	if err != nil {
-		return "", err
-	}
-	result := output.String()
-	if err != nil {
-		return "", err
-	}
-
 	return result, nil
 }
 
