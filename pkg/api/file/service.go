@@ -19,6 +19,7 @@ type Service interface {
 	ReadAll(chan gox.FileChannel, Context)
 	Read(chan gox.FileChannel, Context, *gox.File) 
 	Delete(chan gox.FileChannel, Context, *gox.File)
+	GetResult(chan gox.FileChannel) *gox.FileChannel
 }
 
 func New(cache redis.Cacher, pgs *postgres.Database, database *ffile.File, kinesis faws.FileKinesis, aws *faws.File, streamName string, partitionKey string) *File {

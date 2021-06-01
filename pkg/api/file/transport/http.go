@@ -14,7 +14,7 @@ import (
 
 // HTTP represents the file http service. 
 type HTTP struct {
-	svc file.Service // pkg/api/file/service.go
+	svc 	file.Service // pkg/api/file/service.go
 }
 
 // Modify the pointer to the echo service to include the endpoints for file related operations
@@ -54,7 +54,6 @@ func (h HTTP) create(c echo.Context) error {
 
 	fc := make(chan gox.FileChannel)
 	defer close(fc)
-	
 	go h.svc.Create(fc, c, &gox.File{
 		Filename:		r.Filename,
 		Path:			r.Path,
@@ -65,8 +64,7 @@ func (h HTTP) create(c echo.Context) error {
 		Data:			[]byte(r.Data),
 		Received:		created,
 	})
-
-	result := <- fc
+	result := h.svc.GetResult(fc)
 	file := result.File
 	err := result.Err
 
@@ -81,10 +79,10 @@ func (h HTTP) create(c echo.Context) error {
 func (h HTTP) readAll(c echo.Context) error {
 	fc := make(chan gox.FileChannel)
 	defer close(fc)
+
 	go h.svc.ReadAll(fc, c)
 
-
-	result := <- fc
+	result := h.svc.GetResult(fc)
 	file := result.File
 	err := result.Err
 	if err != nil {
@@ -102,7 +100,7 @@ func (h HTTP) read(c echo.Context) error {
 	go h.svc.Read(fc, c, &gox.File{
 		FileId: id,
 	})
-	result := <- fc
+	result := h.svc.GetResult(fc)
 	err := result.Err
 
 	if err != nil {
@@ -118,7 +116,7 @@ func (h HTTP) delete(c echo.Context) error {
 	id := c.Param("id")
 
 	go h.svc.Delete(fc, c, &gox.File{FileId: id})
-	result := <- fc
+	result := h.svc.GetResult(fc)
 	err := result.Err
 	if err != nil {
 		return err

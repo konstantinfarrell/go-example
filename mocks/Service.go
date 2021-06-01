@@ -24,6 +24,22 @@ func (_m *Service) Delete(_a0 chan gox.FileChannel, _a1 file.Context, _a2 *gox.F
 	_m.Called(_a0, _a1, _a2)
 }
 
+// GetResult provides a mock function with given fields: _a0
+func (_m *Service) GetResult(_a0 chan gox.FileChannel) *gox.FileChannel {
+	ret := _m.Called(_a0)
+
+	var r0 *gox.FileChannel
+	if rf, ok := ret.Get(0).(func(chan gox.FileChannel) *gox.FileChannel); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gox.FileChannel)
+		}
+	}
+
+	return r0
+}
+
 // Read provides a mock function with given fields: _a0, _a1, _a2
 func (_m *Service) Read(_a0 chan gox.FileChannel, _a1 file.Context, _a2 *gox.File) {
 	_m.Called(_a0, _a1, _a2)

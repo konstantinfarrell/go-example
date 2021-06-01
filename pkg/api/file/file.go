@@ -48,3 +48,9 @@ func (f File) ReadAll(fc chan gox.FileChannel, c Context) {
 	
 	fc <- gox.FileChannel{File: result, Err: nil}
 }
+
+func (f File) GetResult(fc chan gox.FileChannel) *gox.FileChannel {
+	// TODO: idk maybe timeout or something? still learning
+	result := <- fc
+	return &result
+}

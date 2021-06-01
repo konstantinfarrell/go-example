@@ -12,8 +12,9 @@ import (
 
 	"github.com/konstantinfarrell/go-example"
 	"github.com/konstantinfarrell/go-example/mocks"
-	"github.com/konstantinfarrell/go-example/pkg/util/postgres"
 	"github.com/konstantinfarrell/go-example/pkg/api/file"
+	"github.com/konstantinfarrell/go-example/pkg/util/postgres"
+	"github.com/konstantinfarrell/go-example/pkg/util/helpers"
 	faws "github.com/konstantinfarrell/go-example/pkg/api/file/platform/aws"
 	ffile "github.com/konstantinfarrell/go-example/pkg/api/file/platform/postgres"
 )
@@ -44,7 +45,7 @@ func TestCreate(t *testing.T) {
 
 	sn := "foo"
 	pk := "0"
-	f := exampleFile()
+	f := helpers.ExampleFile()
 	data, _ := f.ToJson()
 	formatted, _ := faws.FormatPayload(data, "create")
 	payload := &kinesis.PutRecordInput {
@@ -115,7 +116,7 @@ func TestRead(t *testing.T) {
 
 	sn := "foo"
 	pk := "0"
-	f := exampleFile()
+	f := helpers.ExampleFile()
 	
 	query := fmt.Sprintf("select * from read_file('%s')", f.FileId)
 	var files []gox.File
