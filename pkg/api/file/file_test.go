@@ -3,7 +3,6 @@ package file_test
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/aws/aws-sdk-go/service/kinesis"
@@ -18,26 +17,6 @@ import (
 	faws "github.com/konstantinfarrell/go-example/pkg/api/file/platform/aws"
 	ffile "github.com/konstantinfarrell/go-example/pkg/api/file/platform/postgres"
 )
-
-func exampleFile() *gox.File {
-	fileId := uuid.New().String()
-	filename := "filename"
-	path := "C:/Users/foo/filename.txt"
-	permissions := "rw"
-	now := time.Now().UTC().Format(time.RFC3339)
-	data := []byte("file contents")
-	model := &gox.File{
-		FileId: 		fileId,
-		Filename:		filename,
-		Path:			path,
-		Permissions:	permissions,
-		Created:		now,
-		Modified:		now,
-		Data:			data,
-		Received:		now,
-	}
-	return model
-}
 
 func TestCreate(t *testing.T) {
 	assert := assert.New(t)

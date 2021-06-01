@@ -45,7 +45,6 @@ func (d *Database) Call(hasReturn bool, files *[]gox.File, sp string, args ...in
 	_, err := d.Conn.Query(files, query)
 	if err != nil {
 		log.Printf("Error calling sp: %s", err)
-		panic(err)
 		return nil, err
 	}
 	return files, nil
