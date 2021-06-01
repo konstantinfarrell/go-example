@@ -34,10 +34,7 @@ func (f File) Read(fc chan gox.FileChannel, c Context, request *gox.File) {
 		return
 	}
 
-	files := []gox.File{
-		*result,
-	}
-	fc <- gox.FileChannel{File: &files, Err: nil}
+	fc <- gox.FileChannel{File: result, Err: nil}
 }
 
 func (f File) ReadAll(fc chan gox.FileChannel, c Context) {

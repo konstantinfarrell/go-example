@@ -101,13 +101,14 @@ func (h HTTP) read(c echo.Context) error {
 		FileId: id,
 	})
 	result := h.svc.GetResult(fc)
-	err := result.Err
 
+	file := result.File
+	err := result.Err
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, &result)	
+	return c.JSON(http.StatusOK, &file)	
 }
 
 func (h HTTP) delete(c echo.Context) error {

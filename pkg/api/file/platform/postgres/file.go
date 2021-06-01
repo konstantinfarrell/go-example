@@ -9,17 +9,14 @@ type File struct {
 
 }
 
-func (f *File) ReadFile(d *postgres.Database, file *gox.File) (*gox.File, error) {
+func (f *File) ReadFile(d *postgres.Database, file *gox.File) (*[]gox.File, error) {
 	spname := "read_file"
 	var files []gox.File
 	_, err := d.Call(true, &files, spname, file.FileId)
 	if err != nil {
 		return nil, err
 	}
-	if files == nil {
-		return nil, nil
-	}
-	return &files[0], nil
+	return &files, nil
 }
 
 func (f *File) ReadAllFiles(d *postgres.Database) (*[]gox.File, error) {
