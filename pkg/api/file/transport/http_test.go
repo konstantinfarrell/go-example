@@ -14,13 +14,8 @@ import (
 	"github.com/konstantinfarrell/go-example/mocks"
 	"github.com/konstantinfarrell/go-example/pkg/util/helpers"
 	"github.com/konstantinfarrell/go-example/pkg/util/server"
-	_"github.com/konstantinfarrell/go-example/pkg/util/postgres"
 
-	_"github.com/konstantinfarrell/go-example/pkg/api/file"
 	"github.com/konstantinfarrell/go-example/pkg/api/file/transport"
-	//_ faws "github.com/konstantinfarrell/go-example/pkg/api/file/platform/aws"
-	//_ ffile "github.com/konstantinfarrell/go-example/pkg/api/file/platform/postgres"
-
 )
 
 func TestCreate(t *testing.T) {
