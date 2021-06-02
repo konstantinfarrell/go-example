@@ -7,3 +7,6 @@ test:
 	for f in $$(find . -name "*test.go" -type f) ; do \
 		go test $${f} -v ; \
 	done
+
+mock:
+	mockery --all

@@ -33,8 +33,16 @@ The following environment variables are NOT currently required, but will be late
 
 ## Usage
 
+Set the listed environment variables and run
+
 	make
 
-## TODOs
+## Testing
 
-- Add mocking for better unit tests
+To run all unit tests run
+
+	make test
+
+To rebuild mocks run
+
+	make mock
