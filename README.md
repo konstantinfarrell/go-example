@@ -14,6 +14,12 @@ For WRITE operations, the API does simple validation before formatting and passi
 
 The following are environment variables necessary to run the API
 
+Application:
+
+	API_PORT
+	API_LOG_LEVEL
+	API_TIMEOUT
+
 Database:
 
 	DB_USER

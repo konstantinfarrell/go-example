@@ -59,6 +59,13 @@ func LoadFromEnvVar(conf *Configuration) (*Configuration, error) {
 	}
 	conf.Cache = &c
 
+	var s Server
+	err = envconfig.Process("", &s)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading environment variables, %v", err.Error())
+	}
+	conf.Server = &c
+
 	return conf, nil
 }
 
@@ -84,9 +91,9 @@ type Cache struct {
 }
 
 type Server struct {
-	Port 			string
-	Loglevel 		string
-	TimeoutSeconds 	int		`yaml:"timeout_seconds"`
+	Port 			string 	`envconfig:"API_PORT"`
+	Loglevel 		string	`envconfig:"API_LOG_LEVEL"`
+	TimeoutSeconds 	int		`envconfig:"API_TIMEOUT`
 }
 
 type Aws struct {
