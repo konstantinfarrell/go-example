@@ -64,7 +64,7 @@ func LoadFromEnvVar(conf *Configuration) (*Configuration, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error reading environment variables, %v", err.Error())
 	}
-	conf.Server = &c
+	conf.Server = &s
 
 	return conf, nil
 }
