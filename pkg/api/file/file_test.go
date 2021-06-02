@@ -36,11 +36,11 @@ func TestCreate(t *testing.T) {
 	ks.On("PutRecord", payload).Return(&kinesis.PutRecordOutput{}, nil)
 
 	fileService := file.New(
-		&mocks.Cacher{},
+		new(mocks.Cacher),
 		database,
-		&ffile.File{},
+		new(ffile.File),
 		ks,
-		&faws.File{},
+		new(faws.File),
 		sn,
 		pk,
 	)
@@ -71,11 +71,11 @@ func TestDelete(t *testing.T) {
 	ks.On("PutRecord", payload).Return(&kinesis.PutRecordOutput{}, nil)
 
 	fileService := file.New(
-		&mocks.Cacher{},
+		new(mocks.Cacher),
 		database,
-		&ffile.File{},
+		new(ffile.File),
 		ks,
-		&faws.File{},
+		new(faws.File),
 		sn,
 		pk,
 	)
@@ -104,11 +104,11 @@ func TestRead(t *testing.T) {
 	database := &postgres.Database{ Conn: conn }
 
 	fileService := file.New(
-		&mocks.Cacher{},
+		new(mocks.Cacher),
 		database,
-		&ffile.File{},
-		&mocks.FileKinesis{},
-		&faws.File{},
+		new(ffile.File),
+		new(mocks.FileKinesis),
+		new(faws.File),
 		sn,
 		pk,
 	)
@@ -125,7 +125,7 @@ func TestRead(t *testing.T) {
 func TestReadAll(t *testing.T) {
 	assert := assert.New(t)
 
-	conn := &mocks.Databaser{}
+	conn := new(mocks.Databaser)
 
 	sn := "foo"
 	pk := "0"
@@ -137,11 +137,11 @@ func TestReadAll(t *testing.T) {
 	database := &postgres.Database{ Conn: conn }
 
 	fileService := file.New(
-		&mocks.Cacher{},
+		new(mocks.Cacher),
 		database,
-		&ffile.File{},
-		&mocks.FileKinesis{},
-		&faws.File{},
+		new(ffile.File),
+		new(mocks.FileKinesis),
+		new(faws.File),
 		sn,
 		pk,
 	)
@@ -149,7 +149,7 @@ func TestReadAll(t *testing.T) {
 	fc := make(chan gox.FileChannel)
 	defer close(fc)
 
-	go fileService.ReadAll(fc, &mocks.Context{})
+	go fileService.ReadAll(fc, new(mocks.Context))
 	result := <- fc
 	err := result.Err
 	assert.Nil(err)

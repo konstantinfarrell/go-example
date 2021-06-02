@@ -5,7 +5,7 @@ run:
 
 test:
 	for f in $$(find . -name "*test.go" -type f) ; do \
-		go test $${f} -v ; \
+		go test $${f} ; \
 	done
 
 mock:
