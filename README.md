@@ -34,9 +34,6 @@ AWS:
 	KINESIS_STREAM_NAME
 	KINESIS_PARTITION_KEY
 
-The following environment variables are NOT currently required, but will be later on.
-
-
 ## Usage
 
 Set the listed environment variables and run
